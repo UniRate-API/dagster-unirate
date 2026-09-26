@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dagster-unirate"
+version = "0.1.0"
+description = "Dagster integration for the UniRate currency-exchange API — a ConfigurableResource and example assets for real-time rates, conversion, currencies, and VAT."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Unirate Team" }]
+keywords = [
+    "dagster",
+    "unirate",
+    "currency",
+    "exchange-rates",
+    "data-engineering",
+    "forex",
+    "vat",
+    "fintech",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+]
+dependencies = [
+    "dagster>=1.8.0,<2.0",
+    "httpx>=0.25,<1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/UniRate-API/dagster-unirate"
+Repository = "https://github.com/UniRate-API/dagster-unirate"
+Issues = "https://github.com/UniRate-API/dagster-unirate/issues"
+Provider = "https://unirateapi.com"
+
+[dependency-groups]
+test = [
+    "pytest>=8.0,<9.0",
+    "respx>=0.20,<1.0",
+]
+lint = [
+    "ruff>=0.6,<1.0",
+]
+typing = [
+    "mypy>=1.10,<2.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["dagster_unirate"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "RUF"]
+
+[tool.mypy]
+python_version = "3.10"
+disallow_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+# Dagster ships partial type hints; its asset decorator wraps functions in ways
+# mypy can't fully follow (the ``context`` arg and AssetsDefinition wrapping).
+[[tool.mypy.overrides]]
+module = ["dagster", "dagster.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
